@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  nominatim:
+    container_name: nominatim
+    image: mediagis/nominatim:4.3
+    ports:
+      - "8080:8080"
+      - "8888:5432"
+    environment:
+      PBF_PATH: /nominatim/data/col.osm.pbf
+    volumes:
+      - /osm-maps/data:/nominatim/data
+
+  elasticsearch:
+    container_name: elastic
+    image: elasticsearch:8.12.1
+    depends_on:
+      - nominatim
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
