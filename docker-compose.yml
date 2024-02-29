@@ -9,6 +9,7 @@ services:
       - "8888:5432"
     environment:
       PBF_PATH: /nominatim/data/col.osm.pbf
+      NOMINATIM_PASSWORD: "KLL1234"
     volumes:
       - /osm-maps/data:/nominatim/data
 
