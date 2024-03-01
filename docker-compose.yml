@@ -12,12 +12,23 @@ services:
       NOMINATIM_PASSWORD: ${NOMINATIM_PASSWORD}
     volumes:
       - /osm-maps/data:/nominatim/data
+    command: ["./wait-for-it.sh", "localhost:8888", "--", "logstash", "-f", "/config/logstash.conf"]
+    depends_on:
+      - logstash
+
+  logstash:
+    container_name: logstash
+    image: docker.elastic.co/logstash/logstash:8.12.1
+    volumes:
+      - ./logstash.conf:/config/logstash.conf
+      - ./wait-for-it.sh:/config/wait-for-it.sh
+    command: ["sh", "-c", "chmod +x /config/wait-for-it.sh && /config/wait-for-it.sh localhost:8888 -- logstash -f /config/logstash.conf"]
+    depends_on:
+      - elasticsearch
 
   elasticsearch:
     container_name: elastic
-    image: elasticsearch:8.12.1
-    depends_on:
-      - nominatim
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
     ports:
       - "9200:9200"
       - "9300:9300"
