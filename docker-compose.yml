@@ -8,8 +8,8 @@ services:
       - "8080:8080"
       - "8888:5432"
     environment:
-      PBF_PATH: /nominatim/data/col.osm.pbf
-      NOMINATIM_PASSWORD: "KLL1234"
+      PBF_PATH: ${PBF_PATH}
+      NOMINATIM_PASSWORD: ${NOMINATIM_PASSWORD}
     volumes:
       - /osm-maps/data:/nominatim/data
 
@@ -22,8 +22,8 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
+      - discovery.type=${DISCOVERY_TYPE}
+      - xpack.security.enabled=${XPACK_SECURITY_ENABLED}
     networks:
       - backend
 
