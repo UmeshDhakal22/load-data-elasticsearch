@@ -1,0 +1,56 @@
+{
+    "index_patterns": ["nominatim_index*"],
+    "settings": {
+      "analysis": {
+        "filter": {
+          "edgeNGram_filter": {
+            "type": "edge_ngram",
+            "min_gram": 4,
+            "max_gram": 5,
+            "token_chars": ["letter", "digit"]
+          },
+          "nGram_filter": {
+            "type": "ngram",
+            "min_gram": 2,
+            "max_gram": 20,
+            "token_chars": ["letter", "digit"]
+          }
+        },
+        "analyzer": {
+          "edgeNGram_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "edgeNGram_filter"
+            ]
+          },
+          "nGram_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase",
+              "nGram_filter"
+            ]
+          }
+        }
+      }
+    },
+    "mappings": {
+      "properties": {
+        "name": {
+          "type": "text",
+          "fields": {
+            "nGram": {
+              "type": "text",
+              "analyzer": "nGram_analyzer"
+            },
+            "edgeNGram": {
+              "type": "text",
+              "analyzer": "edgeNGram_analyzer"
+            }
+          }
+        }
+      }
+    }
+  }
