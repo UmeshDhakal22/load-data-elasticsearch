@@ -5,14 +5,14 @@
         "filter": {
           "edgeNGram_filter": {
             "type": "edge_ngram",
-            "min_gram": 4,
-            "max_gram": 5,
+            "min_gram": 3,
+            "max_gram": 4,
             "token_chars": ["letter", "digit"]
           },
           "nGram_filter": {
             "type": "ngram",
-            "min_gram": 2,
-            "max_gram": 20,
+            "min_gram": 3,
+            "max_gram": 4,
             "token_chars": ["letter", "digit"]
           }
         },
