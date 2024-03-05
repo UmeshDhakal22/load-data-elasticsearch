@@ -6,7 +6,7 @@ services:
       context: .
     container_name: logstashs
     depends_on:
-      - elastic
+      - elasticsearch
       - nominatim
     restart: always
 
@@ -22,7 +22,7 @@ services:
     volumes:
       - /osm-maps/data:/nominatim/data
 
-  elastic:
+  elasticsearch:
     container_name: elastic
     image: elasticsearch:8.12.1
     depends_on:
@@ -33,9 +33,3 @@ services:
     environment:
       - discovery.type=${DISCOVERY_TYPE}
       - xpack.security.enabled=${XPACK_SECURITY_ENABLED}
-    networks:
-      - backend
-
-networks:
-  backend:
-    driver: bridge
