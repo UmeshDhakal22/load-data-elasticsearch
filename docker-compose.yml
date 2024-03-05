@@ -1,6 +1,15 @@
 version: "3"
 
 services:
+  logstashs:
+    build:
+      context: .
+    container_name: logstashs
+    depends_on:
+      - elastic
+      - nominatim
+    restart: always
+
   nominatim:
     container_name: nominatim
     image: mediagis/nominatim:4.3
@@ -13,7 +22,7 @@ services:
     volumes:
       - /osm-maps/data:/nominatim/data
 
-  elasticsearch:
+  elastic:
     container_name: elastic
     image: elasticsearch:8.12.1
     depends_on:
