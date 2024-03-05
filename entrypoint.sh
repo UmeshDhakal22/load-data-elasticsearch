@@ -1,13 +1,22 @@
 #!/bin/bash
 
-echo "Loading Logstash..."
+FLAG_FILE="/app/logstash_started.flag"
 
-echo "Running logstash...."
+# Check if Logstash has already been started
+if [ ! -f "$FLAG_FILE" ]; then
+    echo "Loading Logstash..."
+    
+    touch "$FLAG_FILE"
 
-/app/wait-for-it.sh elasticsearch:9200 -t 0
+    echo "Running Logstash...."
 
-curl -X PUT "http://elasticsearch:9200/_template/nominatim_template" -H 'Content-Type: application/json' -d @template.json
+    /app/wait-for-it.sh nominatim:8080 -t 0
 
-logstash -f logstash.conf
+    curl -X PUT "http://elasticsearch:9200/_template/nominatim_template" -H 'Content-Type: application/json' -d @template.json
+
+    logstash -f logstash.conf
+else
+    echo "Logstash has already been started. Skipping..."
+fi
 
 exec "$@"
