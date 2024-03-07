@@ -8,7 +8,7 @@ services:
     depends_on:
       - elasticsearch
       - nominatim
-    restart: always
+    restart: no
 
   nominatim:
     container_name: nominatim
